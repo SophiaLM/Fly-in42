@@ -1,0 +1,72 @@
+{
+  "challenger/01_the_impossible_dream.txt": {
+    "nb_drones": 25,
+    "n_zones": 54,
+    "n_connections": 70,
+    "start_hub": "start",
+    "end_hub": "impossible_goal"
+  },
+  "easy/01_linear_path.txt": {
+    "nb_drones": 2,
+    "n_zones": 4,
+    "n_connections": 3,
+    "start_hub": "start",
+    "end_hub": "goal"
+  },
+  "easy/02_simple_fork.txt": {
+    "nb_drones": 4,
+    "n_zones": 5,
+    "n_connections": 5,
+    "start_hub": "start",
+    "end_hub": "goal"
+  },
+  "easy/03_basic_capacity.txt": {
+    "nb_drones": 4,
+    "n_zones": 4,
+    "n_connections": 3,
+    "start_hub": "start",
+    "end_hub": "goal"
+  },
+  "hard/01_maze_nightmare.txt": {
+    "nb_drones": 8,
+    "n_zones": 17,
+    "n_connections": 22,
+    "start_hub": "start",
+    "end_hub": "goal"
+  },
+  "hard/02_capacity_hell.txt": {
+    "nb_drones": 12,
+    "n_zones": 15,
+    "n_connections": 21,
+    "start_hub": "start",
+    "end_hub": "goal"
+  },
+  "hard/03_ultimate_challenge.txt": {
+    "nb_drones": 15,
+    "n_zones": 31,
+    "n_connections": 37,
+    "start_hub": "start",
+    "end_hub": "goal"
+  },
+  "medium/01_dead_end_trap.txt": {
+    "nb_drones": 5,
+    "n_zones": 6,
+    "n_connections": 5,
+    "start_hub": "start",
+    "end_hub": "goal"
+  },
+  "medium/02_circular_loop.txt": {
+    "nb_drones": 6,
+    "n_zones": 7,
+    "n_connections": 7,
+    "start_hub": "start",
+    "end_hub": "goal"
+  },
+  "medium/03_priority_puzzle.txt": {
+    "nb_drones": 5,
+    "n_zones": 7,
+    "n_connections": 7,
+    "start_hub": "start",
+    "end_hub": "goal"
+  }
+}
