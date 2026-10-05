@@ -1,0 +1,62 @@
+# Descripción de una línea de cada mapa (se muestra como "Prueba:").
+# Formato:  <clave> = <frase>      (separador exacto: espacio, "=", espacio)
+#   - mapas válidos:   ruta relativa a test/maps/   (ej. easy/01_linear_path.txt)
+#   - mapas inválidos: nombre del archivo           (ej. zona_x_no_entero.txt)
+# Un mapa sin entrada usa una frase genérica. Edita libremente.
+
+# ------------------------------------------------------------ válidos --------
+easy/01_linear_path.txt = Camino lineal: el caso más simple
+easy/02_simple_fork.txt = Bifurcación simple con más de una ruta posible
+easy/03_basic_capacity.txt = Capacidad básica de zonas y conexiones
+medium/01_dead_end_trap.txt = Callejón sin salida que la ruta debe evitar
+medium/02_circular_loop.txt = Mapa con un bucle circular
+medium/03_priority_puzzle.txt = Zonas priority preferidas a igual longitud
+hard/01_maze_nightmare.txt = Laberinto grande
+hard/02_capacity_hell.txt = Capacidades muy ajustadas
+hard/03_ultimate_challenge.txt = Mapa difícil que combina todas las reglas
+challenger/01_the_impossible_dream.txt = Mapa challenger con 25 drones
+
+# ---------------------------------------------------- inválidos: estructura --
+archivo_vacio.txt = Archivo de 0 bytes: no hay nada que parsear
+solo_comentarios.txt = Solo comentarios y líneas en blanco (equivale a vacío)
+encoding_invalido.txt = Archivo con bytes que no son UTF-8 válido
+primera_linea_no_nb_drones.txt = La primera línea no es nb_drones
+nb_drones_duplicado.txt = nb_drones declarado dos veces
+sin_dos_puntos.txt = Línea sin ':' tras la directiva
+directiva_desconocida.txt = Directiva que no existe (zone:)
+sin_start_hub.txt = Mapa sin start_hub
+dos_start_hub.txt = Dos start_hub en el mismo mapa
+sin_end_hub.txt = Mapa sin end_hub
+dos_end_hub.txt = Dos end_hub en el mismo mapa
+
+# ------------------------------------------------------- inválidos: nb_drones -
+nb_drones_cero.txt = nb_drones igual a 0
+nb_drones_negativo.txt = nb_drones negativo
+nb_drones_no_entero.txt = nb_drones que no es un número
+
+# --------------------------------------------------------- inválidos: zonas --
+zona_pocos_tokens.txt = Zona sin todas sus coordenadas (nombre y x)
+zona_demasiados_tokens.txt = Zona con más campos que nombre, x e y
+zona_nombre_con_guion.txt = Nombre de zona con '-'
+zona_x_no_entero.txt = Coordenada x que no es un entero
+zona_y_decimal.txt = Coordenada y con decimales
+zona_duplicada.txt = Dos zonas con el mismo nombre
+zona_duplicada_con_start.txt = Zona con el mismo nombre que el start_hub
+zone_invalida.txt = zone= con un tipo que no existe (volcano)
+
+# ----------------------------------------------------- inválidos: metadata ---
+metadata_sin_cerrar.txt = Bloque de metadata sin ']' de cierre
+metadata_sin_igual.txt = Token de metadata sin '=' (clave sin valor)
+metadata_clave_duplicada.txt = Misma clave dos veces en el bloque de metadata
+color_vacio.txt = color= sin valor
+max_drones_cero.txt = max_drones igual a 0
+max_drones_no_entero.txt = max_drones que no es un número
+link_capacity_cero.txt = max_link_capacity igual a 0
+link_capacity_no_entero.txt = max_link_capacity que no es un número
+
+# --------------------------------------------------- inválidos: conexiones ---
+conexion_sin_guion.txt = Conexión sin '-' entre las zonas
+conexion_zona_desconocida_a.txt = Conexión cuyo primer extremo no existe
+conexion_zona_desconocida_b.txt = Conexión cuyo segundo extremo no existe
+conexion_antes_de_zonas.txt = Conexión declarada antes de definir sus zonas
+conexion_duplicada_invertida.txt = Misma conexión repetida en sentido inverso (a-b y b-a)

@@ -4,6 +4,9 @@ VENV       = venv
 PYTHON     = $(VENV)/bin/python3
 PIP        = $(VENV)/bin/pip
 
+TEST_DIR    = ../test
+FLY_PYTHON ?= $(abspath $(PYTHON))
+
 PASTEL_PINK = \033[38;5;218m
 PINK        = \033[38;5;218m
 STRONG_PINK = \033[38;5;204m
@@ -52,6 +55,18 @@ lint: ## Ejecuta flake8 y mypy para analizar el código
 	@$(PYTHON) -m flake8 . --exclude venv
 	@$(PYTHON) -m mypy . --warn-return-any --warn-unused-ignores --ignore-missing-imports --disallow-untyped-defs --check-untyped-defs --exclude venv
 
+test-all: _check-venv ## Prueba mapas válidos e inválidos
+	@FLY_DIR="$(CURDIR)" FLY_PYTHON="$(FLY_PYTHON)" bash $(TEST_DIR)/run_all.sh $(ARGS)
+
+test-valid: _check-venv ## Prueba solo los mapas válidos
+	@FLY_DIR="$(CURDIR)" FLY_PYTHON="$(FLY_PYTHON)" bash $(TEST_DIR)/run_valid.sh $(ARGS)
+
+test-errors: _check-venv ## Prueba solo los mapas inválidos
+	@FLY_DIR="$(CURDIR)" FLY_PYTHON="$(FLY_PYTHON)" bash $(TEST_DIR)/run_errors.sh $(ARGS)
+
+_check-venv:
+	@test -x "$(PYTHON)" || { echo "$(STRONG_PINK)venv not found: run 'make install' first$(RESET)"; exit 2; }
+
 clean:
 	@echo "$(PINK)Cleaning up bytecode and caches...$(RESET)"
 	@find . -name venv -prune -o -type d \( -name "__pycache__" -o -name ".mypy_cache" -o -name ".pytest_cache" \) -exec echo "$(LILAC)  [rm dir]  $(RESET) {}" \; -exec rm -rf {} +
@@ -92,4 +107,4 @@ help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  $(LILAC)❯ %-14s$(RESET) %s\n", $$1, $$2}'
 	@echo ""
 
-.PHONY: help install run compile debug clean status lint lint-strict fclean
+.PHONY: help install run compile debug clean status lint lint-strict fclean test-all test-valid test-errors _check-venv
