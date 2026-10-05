@@ -75,12 +75,11 @@ move_to(zone: Zone) -> None
 
 ## 3. La función orquestadora: `move_drone`
 
-Vive en `simulation.py` — no en `pathfinding.py`, porque no decide *a dónde* ir
-(eso es `shortest_path`) sino *ejecutar* un paso ya decidido.
+Vive en `models.py` — no , porque decide *ejecutar* un paso ya decidido.
 
 Y no es una **función libre** con `graph` como primer parámetro: el subject exige
 *completamente orientado a objetos*, así que el `Graph` no se pasa de mano en mano
-sino que lo posee quien orquesta. `move_drone` es un **método de `Simulation`**,
+sino que lo posee quien orquesta. `move_drone` es un **método de `Graf`**,
 que es la clase que ya posee el grafo y la lista de drones:
 
 ```python

@@ -1,4 +1,4 @@
-"""Punto de entrada: parsa un mapa y muestra su resumen."""
+"""Punto de entrada: parsa un mapa, lo simula e imprime los turnos."""
 
 from __future__ import annotations
 
@@ -6,10 +6,17 @@ import sys
 
 from src.parser import parse_map_file
 from src.parser.exceptions import MapParseError
+from src.simulation import Simulation, SimulationError
+from src.visualization import format_turn
 
 
 def main() -> int:
-    """Ejecuta el parser sobre un fichero de mapa y reporta el resultado."""
+    """Ejecuta la simulacion sobre un fichero de mapa y reporta el resultado.
+
+    Devuelve 0 si el mapa se pudo parsear y todos los drones llegaron, y 1
+    si el mapa es invalido o la simulacion no puede terminar. Los turnos ya
+    jugados se quedan impresos aunque la simulacion falle despues.
+    """
     if len(sys.argv) != 2:
         print("usage: python -m src.main <map_file>", file=sys.stderr)
         return 1
@@ -20,11 +27,30 @@ def main() -> int:
     except MapParseError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1
+    except (OSError, UnicodeDecodeError) as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
 
-    print(
-        f"{path}: {graph.nb_drones} drones, "
-        f"{len(graph.zones)} zones, {len(graph.connections)} connections"
-    )
+    try:
+        simulation = Simulation(graph)
+    except SimulationError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
+
+    zone_colors = {zone.name: zone.color for zone in graph.zones.values()}
+
+    try:
+        while True:
+            result = simulation.step()
+            if result is None:
+                break
+            line = format_turn(result.tokens, zone_colors)
+            if line:
+                print(line)
+    except SimulationError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
+
     return 0
 
 

@@ -7,6 +7,7 @@ from .exceptions import MapParseError
 from .io import read_lines, strip_noise
 from .metadata import classify_line, parse_metadata, split_metadata_block
 from .validators import parse_int_field, parse_positive_int, parse_zone_type
+from .validators import parse_color
 
 
 def parse_zone_line(
@@ -32,13 +33,18 @@ def parse_zone_line(
     x = parse_int_field(x_raw, "x", line_no)
     y = parse_int_field(y_raw, "y", line_no)
     zone_type = parse_zone_type(meta.get("zone"), line_no)
+    color = parse_color(meta.get("color"), line_no)
 
     max_drones: int | None = None
-    max_drones_raw = meta.get("max_drones")
-    if max_drones_raw is not None and not (is_start or is_end):
-        # En start_hub/end_hub, max_drones se acepta pero se descarta:
-        # regla explícita del enunciado, no es un error de validación.
-        max_drones = parse_positive_int(max_drones_raw, "max_drones", line_no)
+    if not (is_start or is_end):
+        # El subject (VI) fija max_drones=1 por defecto, asi que solo None
+        # cuando no hay metadata sigue significando "sin limite" para un Zone
+        # construido a mano. En start_hub/end_hub la capacidad se ignora: se
+        # acepta el metadata pero se descarta, y no es un error de validacion
+        # (regla explicita de VII.4).
+        max_drones = parse_positive_int(
+            meta.get("max_drones", "1"), "max_drones", line_no
+        )
 
     return Zone(
         name=name,
@@ -48,6 +54,7 @@ def parse_zone_line(
         max_drones=max_drones,
         is_start=is_start,
         is_end=is_end,
+        color=color,
     )
 
 
@@ -80,12 +87,11 @@ def parse_connection_line(
         )
     seen.add(pair)
 
-    max_link_capacity: int | None = None
-    capacity_raw = meta.get("max_link_capacity")
-    if capacity_raw is not None:
-        max_link_capacity = parse_positive_int(
-            capacity_raw, "max_link_capacity", line_no
-        )
+    # El subject (VI) fija max_link_capacity=1 por defecto: una conexion nunca
+    # es "sin limite", asi que el tipo es int y no int | None.
+    max_link_capacity = parse_positive_int(
+        meta.get("max_link_capacity", "1"), "max_link_capacity", line_no
+    )
 
     return Connection(zones[name_a], zones[name_b], max_link_capacity)
 

@@ -49,8 +49,8 @@ compile: ## Verifica y pre-compila los archivos .py a bytecode
 	@$(PYTHON) -m py_compile $(shell find src -type f -name "*.py" 2>/dev/null)
 
 lint: ## Ejecuta flake8 y mypy para analizar el código
-	@$(PYTHON) -m flake8 .
-	@$(PYTHON) -m mypy .
+	@$(PYTHON) -m flake8 . --exclude venv
+	@$(PYTHON) -m mypy . --warn-return-any --warn-unused-ignores --ignore-missing-imports --disallow-untyped-defs --check-untyped-defs --exclude venv
 
 clean:
 	@echo "$(PINK)Cleaning up bytecode and caches...$(RESET)"
@@ -82,8 +82,8 @@ status:
 	@ls -d .mypy_cache .pytest_cache .coverage htmlcov 2>/dev/null || true
 
 lint-strict:
-	@$(PYTHON) -m flake8 .
-	@$(PYTHON) -m mypy . --strict
+	@$(PYTHON) -m flake8 . --exclude venv
+	@$(PYTHON) -m mypy . --strict --exclude venv
 
 help:
 	@echo "$(STRONG_PINK)┌────────────────────────────────────────────────────────┐$(RESET)"

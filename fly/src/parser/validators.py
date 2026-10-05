@@ -23,6 +23,20 @@ def parse_zone_type(raw: str | None, line_no: int) -> ZoneType:
     )
 
 
+def parse_color(raw: str | None, line_no: int) -> str | None:
+    """Valida el metadato color= y lo devuelve tal cual (None si falta).
+
+    El subject (VI) acepta cualquier palabra como color, sin lista fija,
+    así que no se comprueba contra ninguna paleta. Solo se rechaza el valor
+    vacío (`color=`), que no es una palabra válida.
+    """
+    if raw is None:
+        return None
+    if not raw:
+        raise MapParseError(f"Line {line_no}: 'color' cannot be empty")
+    return raw
+
+
 def parse_positive_int(raw: str, field_name: str, line_no: int) -> int:
     """Convierte cadena en entero positivo con campo y línea en el error."""
     try:
